@@ -53,20 +53,19 @@ public class WikiCFPScraperTemplate {
                     //IMPORTANT! Do not change the following:
                     Thread.sleep(DELAY * 1000); //rate-limit the queries
                 }
+            }
+            // process rows
+            for (int i = 0; i < rows.size(); i += 2) {
+                // First Row of information
+                Element row1 = rows.get(i);
+                String acronym = row1.select("td:nth-child(1) a").text();
+                String name = row1.select("td:nth-child(2)").text();
 
-                // process rows
-                for (int i = 0; i < rows.size(); i += 2) {
-                    // First Row of information
-                    Element row1 = rows.get(i);
-                    String acronym = row1.select("td:nth-child(1) a").text();
-                    String name = row1.select("td:nth-child(2)").text();
-
-                    // Second row of information
-                    Element row2 = rows.get(i + 1);
-                    String location = row2.select("td:nth-child(2)").text();
-                    System.out.println(acronym + '\t' + name + '\t' + location);
-                    writer.write(acronym + '\t' + name + '\t' + location + '\n');
-                }
+                // Second row of information
+                Element row2 = rows.get(i + 1);
+                String location = row2.select("td:nth-child(2)").text();
+                System.out.println(acronym + '\t' + name + '\t' + location);
+                writer.write(acronym + '\t' + name + '\t' + location + '\n');
             }
             writer.close();
         } catch (IOException e) {
